@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useRef, useEffect } from "react";
+import jwt_decode from "jwt-decode";
 
 const Login = () => {
   const UserNameRef = useRef();
@@ -18,19 +19,8 @@ const Login = () => {
   let jwt =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6Ijg1M2JjNDVhLTIwOTctNGE1YS05OTJiLTNmYmE2MWIyY2Y5NSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJhZG1pbiIsIkZ1bGxOYW1lIjoiWmFocmEgU2hhcmlmb3ZhIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJleHAiOjE2MzY5MDgyMzQsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjQ0MzA1LyIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQ0MzA1LyJ9.7K7byjl948hL_Ve784cMITHo_6mxC3IATs0zOOPdyrU";
 
-  let jwtData = jwt.split(".")[1];
-  let decodedJwtJsonData = window.atob(jwtData);
-  let decodedJwtData = JSON.parse(decodedJwtJsonData);
-  // const role = JSON.parse(window.atob(jwt.split(".")[1])).role;
-  let isAdmin = decodedJwtData.Role;
-
-  console.log("jwtData: " + jwtData);
-  console.log("decodedJwtJsonData: " + decodedJwtJsonData);
-  console.log("decodedJwtData: " + decodedJwtData);
-  console.log("Is admin: " + isAdmin);
-// console.log("try to now role"+ role)
-
-
+  var decoded = jwt_decode(jwt);
+  console.log( decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]);
   return (
     <>
       <div className="col-lg-8">
