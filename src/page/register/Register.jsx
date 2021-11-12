@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
+import alertify from "alertifyjs";
 
 const Register = () => {
   const FullNameRef = useRef();
@@ -9,19 +10,18 @@ const Register = () => {
   const PasswordRef = useRef();
   const [error, setError] = useState(false);
   const history = useHistory();
-  const [data, setData] = useState(true)
+  const [data, setData] = useState(true);
 
-//    const statusError=()=>{
-//        if(data.status.204){
+  //    const statusError=()=>{
+  //        if(data.status.204){
 
-//        }
-//     }
-
+  //        }
+  //     }
 
   const RegisterForm = (e) => {
     e.preventDefault();
-    if(FullNameRef.current.value===""){
-        setError(true)
+    if (FullNameRef.current.value === "") {
+      setError(true);
     }
     const registerData = {
       FullName: FullNameRef.current.value,
@@ -29,11 +29,24 @@ const Register = () => {
       email: EmailRef.current.value,
       password: PasswordRef.current.value,
     };
-    axios.post(
-      "https://localhost:44305/api/manage/accounts/register",
-      registerData
-    )
-    .then(res=>console.log(res));
+    axios
+      .post(
+        "https://localhost:44305/api/manage/accounts/register",
+        registerData
+      )
+      .then(response => history.push('/login'))
+      // .then((response) => {})
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response.data.errors);
+          console.log(error.response.status);
+        }
+        if(error.response.status===400){
+          alertify.error("bad reguest")
+          console.log(error.response.data.errors.UserName[0])
+        }
+      });
+    // .then(res=>console.log(res.status));
 
     // history.push(`/login`);
   };

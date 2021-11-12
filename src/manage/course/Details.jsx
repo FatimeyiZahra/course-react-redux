@@ -67,13 +67,8 @@ const Details = () => {
                   <span className="category">{item.name}</span>
                 ))
               ) : (
-                <>
-                  <span>{courseDetails.courseTags && courseDetails.courseTags.name}</span>
-                </>
+                  <span>{courseDetails.courseTags &&courseDetails.courseTags[0].name}</span>
               )}
-              {/* (courseDetails.courseTags.map((item) => (
-                     <span className="category">{item.name}</span>
-                ))) */}
             </div>
           </>
         )}
