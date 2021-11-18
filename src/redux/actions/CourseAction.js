@@ -9,10 +9,17 @@ export const setAllCourse = () => dispatch=>{
 };
 
 export const setCourseDetails=(id)=>dispatch=>{
-  // console.log(id)
   axios
   .get(`https://localhost:44305/api/manage/courses/${id}`)
   .then((res)=>{
     dispatch({type:actionTypes.Set_Course_Details,payload:res.data})
+  })
+}
+export const createCourse=(CreateData)=>dispatch=>{
+  console.log(CreateData);
+  axios
+  .post(`https://localhost:44305/api/manage/courses`,CreateData)
+  .then((res)=>{
+    dispatch({type:actionTypes.Create_Course,payload:res.data})
   })
 }

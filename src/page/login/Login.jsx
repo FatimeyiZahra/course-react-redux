@@ -47,6 +47,11 @@ const Login = () => {
       // history.push(`/categoryList`);
     }
   }
+  //  const getHomeRouteForLoggedInUser = () => {
+  //   if (role === 'admin') return '/courseList'
+  //   if (role === 'client') return { name: 'access-control' }
+  //   return { name: 'auth-login' }
+  // }
 
   return (
     <>
