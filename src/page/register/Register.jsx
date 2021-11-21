@@ -34,17 +34,35 @@ const Register = () => {
         "https://localhost:44305/api/manage/accounts/register",
         registerData
       )
-      .then(response => history.push('/login'))
+      .then((response) => history.push("/login"))
       // .then((response) => {})
       .catch((error) => {
         if (error.response) {
-          console.log(error.response.data.errors);
-          console.log(error.response.status);
+          // console.log(error.response.data.errors);
+          // console.log(error.response.status);
+          if (error.response.data.errors.FullName) {
+            for (
+              let i = 0;
+              i < error.response.data.errors.FullName.length;
+              i++
+            ) {
+              alertify.error(error.response.data.errors.FullName[i]);
+            }
+          }
+          if (error.response.data.errors.UserName) {
+            for (
+              let i = 0;
+              i < error.response.data.errors.UserName.length;
+              i++
+            ) {
+              alertify.error(error.response.data.errors.UserName[i]);
+            }
+          }
         }
-        if(error.response.status===400){
-          alertify.error("bad reguest")
-          console.log(error.response.data.errors.UserName[0])
-        }
+        // if (error.response.status === 400) {
+        //   alertify.error("bad reguest");
+        //   console.log(error.response.data.errors.UserName[0]);
+        // }
       });
     // .then(res=>console.log(res.status));
 
@@ -112,3 +130,7 @@ const Register = () => {
 };
 
 export default Register;
+
+// Object.keys(error.response.data.errors).map((err) => {
+//   console.log(err);
+// });

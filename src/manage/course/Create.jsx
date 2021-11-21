@@ -5,6 +5,8 @@ import makeAnimated from "react-select/animated";
 import Select from "react-select";
 import { createCourse } from "../../redux/actions/CourseAction";
 import { setAllCategory } from "../../redux/actions/CategoryAction";
+import { useHistory } from "react-router-dom";
+import alertify from "alertifyjs";
 
 const animatedComponents = makeAnimated();
 
@@ -12,30 +14,30 @@ const Create = () => {
   const NameRef = useRef();
   const DescRef = useRef();
   const PriceRef = useRef();
+  const DateRef = useRef();
   const [selectedOptionss, setSelectedOptions] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState()
-
+  const [selectedCategory, setSelectedCategory] = useState();
+  const allCategory = useSelector((state) => state.CategoryReducer.allCategory);
+  const allTags = useSelector((state) => state.TagReducer.allTag);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setAllTags());
+    dispatch(setAllCategory());
+  }, []);
+  const history = useHistory();
   const CreateForm = (e) => {
     e.preventDefault();
     const CreateData = {
       Name: NameRef.current.value,
       Desc: DescRef.current.value,
-        Price: parseFloat(PriceRef.current.value) ,
+      Price: parseFloat(PriceRef.current.value),
       TagIds: selectedOptionss,
-      CategoryId:parseInt(selectedCategory),
-      StartDate:"2022-01-01T00:00:00"
+      CategoryId: parseInt(selectedCategory),
+      StartDate: DateRef.current.value,
     };
-    dispatch(createCourse(CreateData));
-    // console.log(CreateData);
+    dispatch(createCourse(CreateData, history.push));
+    console.log(CreateData);
   };
-  const allCategory = useSelector((state) => state.CategoryReducer.allCategory);
-  const allTags = useSelector((state) => state.TagReducer.allTag);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(setAllTags());
-    dispatch(setAllCategory());
-  }, []);
 
   const options = allTags.map((item) => {
     return { value: item.id, label: item.name };
@@ -47,11 +49,15 @@ const Create = () => {
     selectedOptions.map((o) => catArray.push(o.value));
     setSelectedOptions([...catArray]);
   };
-  const sort = (e) => {
-    setSelectedCategory(e.target.value)
- 
+  const singleSelect = (e) => {
+    if(e.target.value){
+       setSelectedCategory(e.target.value);
+    }
+    else {
+      console.log("select category")
+    }
   };
-    // console.log(selectedCategory);
+  // console.log(selectedCategory);
   return (
     <div className="col-lg-8">
       <form onSubmit={CreateForm}>
@@ -82,6 +88,15 @@ const Create = () => {
             ref={PriceRef}
           />
         </div>
+        <div className="form-group">
+          <label htmlFor="exampleInputPassword1">date</label>
+          <input
+            type="date"
+            className="form-control"
+            placeholder="date"
+            ref={DateRef}
+          />
+        </div>
         <Select
           closeMenuOnSelect={false}
           components={animatedComponents}
@@ -90,8 +105,8 @@ const Create = () => {
           options={options}
           onChange={handleChange}
         />
-        <select   onChange={(e)=>sort(e)} className="form-select">
-          <option value="DEFAULT" disabled>
+        <select onChange={(e) => singleSelect(e)} className="form-select">
+          <option disabled selected>
             select category:
           </option>
           {allCategory &&

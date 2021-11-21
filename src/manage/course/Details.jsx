@@ -3,18 +3,20 @@ import { Link, useParams } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setCourseDetails } from "../../redux/actions/CourseAction";
-
+import Moment from 'react-moment';
 const Details = () => {
   const courseDetails = useSelector(
     (state) => state.CourseReducer.courseDetails
   );
-  console.log(courseDetails);
+  
 
   const dispatch = useDispatch();
   const { id } = useParams();
-  useEffect(() => {
+  React.useEffect(() => {
     dispatch(setCourseDetails(id));
   }, [id]);
+  console.log(courseDetails);
+  const onInputChange = () => {};
   // if (courseDetails.courseTags.length>1) {
   //  console.log(courseDetails.courseTags.length)
   // }
@@ -29,7 +31,8 @@ const Details = () => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput"
-                value={courseDetails.name}
+                value={courseDetails.name || ""}
+                onChange={onInputChange}
               />
             </div>
             <div className="form-group">
@@ -38,7 +41,8 @@ const Details = () => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput"
-                value={courseDetails.desc}
+                value={courseDetails.desc || ""}
+                onChange={onInputChange}
               />
             </div>
             <div className="form-group">
@@ -47,27 +51,28 @@ const Details = () => {
                 type="text"
                 className="form-control"
                 id="formGroupExampleInput"
-                value={courseDetails.price}
+                value={courseDetails.price || ""}
+                onChange={onInputChange}
               />
             </div>
             <div className="form-group">
               <label htmlFor="formGroupExampleInput">start Date</label>
-              <input
-                type="text"
-                className="form-control"
-                id="formGroupExampleInput"
-                value={courseDetails.startDate}
-              />
+              <Moment format="YYYY/MM/DD">
+              {courseDetails.startDate || ""}
+             
+            </Moment>
+             
             </div>
             <div className="form-group">
-              <label htmlFor="formGroupExampleInput">start Date</label>
+              <label htmlFor="formGroupExampleInput">start Date</label> 
+             
               {courseDetails.courseTags &&
               courseDetails.courseTags.length > 1 ? (
                 courseDetails.courseTags.map((item) => (
-                  <span className="category">{item.name}</span>
+                  <span key={item.tagId} className="category">{item.name || ""}</span>
                 ))
               ) : (
-                  <span>{courseDetails.courseTags &&courseDetails.courseTags[0].name}</span>
+                  <span>{courseDetails.courseTags && courseDetails.courseTags[0].name || ""}</span>
               )}
             </div>
           </>

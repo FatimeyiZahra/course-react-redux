@@ -15,11 +15,19 @@ export const setCourseDetails=(id)=>dispatch=>{
     dispatch({type:actionTypes.Set_Course_Details,payload:res.data})
   })
 }
-export const createCourse=(CreateData)=>dispatch=>{
+export const createCourse=(CreateData,push)=>dispatch=>{
   console.log(CreateData);
   axios
   .post(`https://localhost:44305/api/manage/courses`,CreateData)
   .then((res)=>{
     dispatch({type:actionTypes.Create_Course,payload:res.data})
+    push(`/`);
+  })
+}
+export const deleteCourse=(id)=>dispatch=>{
+  axios
+  .delete(`https://localhost:44305/api/manage/courses/${id}`)
+  .then((res)=>{
+    dispatch({type:actionTypes.Delete_Course,payload:res.data})
   })
 }

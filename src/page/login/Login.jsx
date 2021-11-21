@@ -20,14 +20,31 @@ const Login = () => {
       .post("https://localhost:44305/api/manage/accounts/login", loginData)
       .then((res) => setJwt(res.data))
       .catch((error) => {
-        if (error.response) {
-          console.log(error.response.data.errors);
-          console.log(error.response.status);
+        switch (error.response.status) {
+          case 400:
+            console.log("cant");
+            break;
+          case 201:
+            console.log("succes");
+            break;
+          case 404:
+            console.log("not found");
+            break;
+          case 401:
+            console.log("name or passwor dis incorrect");
+            break;
+          default:
+            return console.log("asda");
         }
-        if(error.response.status===400){
-          alertify.error("username or password is incorrect")
-          console.log(error.response.data.errors.UserName[0])
-        }
+        // if (error.response) {
+        //   console.log(error.response.data.errors);
+        //   console.log(error.response.status);
+
+        // }
+        // if(error.response.status===404){
+        //   alertify.error("username or password is incorrect")
+        //   console.log(error.response.data)
+        // }
       });
   };
   console.log(token);
@@ -36,14 +53,15 @@ const Login = () => {
     console.log(
       decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
     );
-    var role= decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-    if(role==="Admin")return <Redirect to="/courseList" />;
+    var role =
+      decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+    if (role === "Admin") return <Redirect to="/courseList" />;
     // {
     //   // history.push(`/courseList`);
     //   console.log("user is admin")
     // }
-    else{
-      console.log("user is member")
+    else {
+      console.log("user is member");
       // history.push(`/categoryList`);
     }
   }
