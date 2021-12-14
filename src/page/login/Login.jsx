@@ -4,62 +4,73 @@ import jwt_decode from "jwt-decode";
 import { useHistory } from "react-router-dom";
 import alertify from "alertifyjs";
 import { Redirect } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { authAction } from "../../redux/actions/AuthAction";
 
 const Login = () => {
+  //admin
+  //admin123
   const UserNameRef = useRef();
   const PasswordRef = useRef();
   const history = useHistory();
+  const dispatch = useDispatch();
   const [token, setJwt] = useState();
+  // const auth = useSelector(state => state.authreducer.token)
+  // console.log(auth)
   const LoginForm = (e) => {
     e.preventDefault();
     const loginData = {
       username: UserNameRef.current.value,
       password: PasswordRef.current.value,
     };
-    axios
-      .post("https://localhost:44305/api/manage/accounts/login", loginData)
-      .then((res) => setJwt(res.data))
-      .catch((error) => {
-        switch (error.response.status) {
-          case 400:
-            console.log("cant");
-            break;
-          case 201:
-            console.log("succes");
-            break;
-          case 404:
-            console.log("not found");
-            break;
-          case 401:
-            console.log("name or passwor dis incorrect");
-            break;
-          default:
-            return console.log("asda");
-        }
-        // if (error.response) {
-        //   console.log(error.response.data.errors);
-        //   console.log(error.response.status);
+    dispatch(authAction(loginData,history.push))
+    // axios
+    //   .post("https://localhost:44305/api/manage/accounts/login", loginData)
+    //   .then((res) => setJwt(res.data))
+    //   .catch((error) => {
+    //     switch (error.response.status) {
+    //       case 400:
+    //         console.log("cant");
+    //         break;
+    //       case 201:
+    //         console.log("succes");
+    //         break;
+    //       case 404:
+    //         // history.push(`/courseList`);
+    //         console.log("not found");
+    //         break;
+    //       case 401:
+    //         console.log("name or passwor dis incorrect");
+    //         break;
+    //       default:
+    //         return console.log("asda");
+    //     }
+    //     // if (error.response) {
+    //     //   console.log(error.response.data.errors);
+    //     //   console.log(error.response.status);
 
-        // }
-        // if(error.response.status===404){
-        //   alertify.error("username or password is incorrect")
-        //   console.log(error.response.data)
-        // }
-      });
+    //     // }
+    //     // if(error.response.status===404){
+    //     //   alertify.error("username or password is incorrect")
+    //     //   console.log(error.response.data)
+    //     // }
+    //   });
   };
   console.log(token);
   if (token) {
     var decoded = jwt_decode(token);
-    console.log(
-      decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
-    );
-    var role =
-      decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-    if (role === "Admin") return <Redirect to="/courseList" />;
+    // console.log(
+    //   decoded
+    // );
+    var role = decoded.Role;
+    // if (role === "Admin") return <Redirect to="/courseList" />;
     // {
     //   // history.push(`/courseList`);
     //   console.log("user is admin")
     // }
+    if (role === "Admin"){
+      console.log("user is admin")
+    }
     else {
       console.log("user is member");
       // history.push(`/categoryList`);

@@ -1,5 +1,6 @@
 import * as actionTypes from "./actionTypes";
 import axios from "axios";
+import { Redirect } from "react-router-dom";
 
 export const setAllCourse = () => dispatch=>{
  axios.get("https://localhost:44305/api/manage/courses")
@@ -14,7 +15,8 @@ export const setCourseDetails=(id)=>dispatch=>{
   .then((res)=>{
     dispatch({type:actionTypes.Set_Course_Details,payload:res.data})
   })
-}
+  .catch((handleError));
+};
 export const createCourse=(CreateData,push)=>dispatch=>{
   console.log(CreateData);
   axios
@@ -30,4 +32,15 @@ export const deleteCourse=(id)=>dispatch=>{
   .then((res)=>{
     dispatch({type:actionTypes.Delete_Course,payload:res.data})
   })
+}
+
+export function handleError(error){
+  switch (error.response.status) {
+    case 404:
+      <Redirect to="/error" />
+
+      break;
+    default:
+      return console.log("asda");
+  }
 }

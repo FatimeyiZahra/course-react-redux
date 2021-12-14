@@ -1,16 +1,12 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect,} from "react";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCourse, setAllCourse } from "../../redux/actions/CourseAction";
-import axios from "axios";
-import { useParams } from "react-router";
 
 const CourseList = () => {
   const allCourse = useSelector((state) => state.CourseReducer.allCourse.data);
   // console.log(allCourse)
-  const { id } = useParams();
-  console.log(id);
 
   const dispatch = useDispatch();
 

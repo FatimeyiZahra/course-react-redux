@@ -7,23 +7,29 @@ import { createCourse } from "../../redux/actions/CourseAction";
 import { setAllCategory } from "../../redux/actions/CategoryAction";
 import { setCourseDetails } from "../../redux/actions/CourseAction";
 import { useParams } from "react-router";
-
+import axios from "axios";
+import DatePicker from "react-datepicker";
+import moment from "moment";
+import "react-datepicker/dist/react-datepicker.css";
 const animatedComponents = makeAnimated();
 
 const Edit = () => {
   const NameRef = useRef();
   const DescRef = useRef();
   const PriceRef = useRef();
+  const DateRef = useRef();
   const [selectedOptionss, setSelectedOptions] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState();
-  const [courseUpdate, setCourseUpdate] = useState([]);
+  // const [DefaultValue, setDefaultValue] = useState([]);
+
   const allCategory = useSelector((state) => state.CategoryReducer.allCategory);
   const allTags = useSelector((state) => state.TagReducer.allTag);
-  const [courseTags, setCourseTags] = useState();
   const courseDetails = useSelector(
     (state) => state.CourseReducer.courseDetails
   );
-  console.log(courseDetails);
+
+  const [courseUpdate, setCourseUpdate] = useState({});
+  console.log(courseUpdate);
   const dispatch = useDispatch();
   const { id } = useParams();
 
@@ -34,19 +40,17 @@ const Edit = () => {
     dispatch(setAllTags());
     dispatch(setAllCategory());
     dispatch(setCourseDetails(id));
-    // setCourseUpdate(courseDetails);
-    if (courseDetails.courseTags && courseDetails.courseTags.length > 1) {
-      var defaultOptions = courseDetails.courseTags.map((item) => {
-        return { value: item.tagId, label: item.name };
-      });
-      setCourseTags([...defaultOptions])
-    
-    }
-  }, []); 
-  if(courseTags){
-     console.log(courseTags);
-  }
-  
+    axios
+      .get(`https://localhost:44305/api/manage/courses/${id}`)
+      .then((res) => setCourseUpdate(res.data));
+    // if (courseDetails.courseTags && courseDetails.courseTags.length > 1) {
+    //   var defaultOptions = courseDetails.courseTags.map((item) => {
+    //     return { value: item.tagId, label: item.name };
+    //   });
+    //   setDefaultValue(defaultOptions);
+    // }
+  }, [id]);
+  // console.log(DefaultValue);
   const UpdateForm = (e) => {
     e.preventDefault();
     const UpdateData = {
@@ -75,6 +79,11 @@ const Edit = () => {
   };
   const onInputChange = () => {};
   // console.log(selectedCategory);
+
+// const starting = new Date(courseDetails.startDate)
+const starting = new Date(moment(courseDetails.startDate).format('YYYY/MM/DD'));
+const star = new Date(2021/11/19)
+console.log(starting)
   return (
     <div className="col-lg-8">
       <form onSubmit={UpdateForm}>
@@ -84,7 +93,7 @@ const Edit = () => {
             type="text"
             className="form-control"
             onChange={onInputChange}
-            value={courseDetails.name || ""}
+            value={courseUpdate.name || ""}
             ref={NameRef}
           />
         </div>
@@ -102,10 +111,43 @@ const Edit = () => {
           <label htmlFor="exampleInputPassword1">price</label>
           <input type="input" className="form-control" ref={PriceRef} />
         </div>
+        <div className="form-group">
+          <label htmlFor="exampleInputPassword1">date</label>
+          <DatePicker
+      dateFormat="yyyy/MM/dd"
+      defaultValue={star}
+      
+    />
+        </div>
         <Select
           closeMenuOnSelect={false}
           components={animatedComponents}
-          defaultValue={courseTags}
+          // defaultValue={{
+          //   value: courseDetails.courseTags[0].tagId ,
+          //   label: courseDetails.courseTags[0].name
+          // }}
+          defaultValue= {courseDetails.courseTags &&
+            courseDetails.courseTags.length > 1 ? (
+              courseDetails.courseTags.map((item) => (
+               { value: item.tagId,
+                 label: item.name,}
+              ))
+            ) : (
+                <span>{courseDetails.courseTags && courseDetails.courseTags[0].name || ""}</span>
+            )}
+          // defaultValue={
+            
+          //     courseDetails.courseTags &&
+          //     courseDetails.courseTags.length > 1 ? (
+          //       courseDetails.courseTags.map((item) => ({
+          //         value: item.tagId,
+          //         label: item.name,
+          //       }))
+          //       :(
+
+          //       )
+          //     ) 
+          // }
           isMulti
           options={options}
           onChange={handleChange}
@@ -121,6 +163,20 @@ const Edit = () => {
               </option>
             ))}
         </select>
+
+        {courseDetails.courseTags && courseDetails.courseTags.length > 1 ? (
+          courseDetails.courseTags.map((item) => (
+            <span key={item.tagId} className="category">
+              {item.name || ""}
+            </span>
+          ))
+        ) : (
+          <span>
+            {(courseDetails.courseTags && courseDetails.courseTags[0].name) ||
+              ""}
+          </span>
+        )}
+
         <button type="submit" className="btn btn-primary">
           Submit
         </button>
