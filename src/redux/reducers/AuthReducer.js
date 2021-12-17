@@ -11,7 +11,7 @@ const getAuthState = () => {
     const authobj = JSON.parse(auth);
   
     const  jwttoken  = authobj.token;
-    console.log(jwttoken)
+    // console.log(jwttoken)
     // if (new Date(expires_at) > new Date()) {
     //   axios.defaults.headers.common["Authorization"] = `Bearer ${jwttoken}`;
     //   return authobj; 
@@ -19,7 +19,7 @@ const getAuthState = () => {
     // }
     if (auth) {
         axios.defaults.headers.common["Authorization"] = `Bearer ${jwttoken}`;
-        console.log(axios.defaults.headers)
+        // console.log(axios.defaults.headers)
         return authobj; 
       
       }

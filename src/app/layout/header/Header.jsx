@@ -1,6 +1,17 @@
 import React from "react";
-
+import { useSelector } from "react-redux";
+import jwt_decode from "jwt-decode";
 const Header = () => {
+  const token = useSelector(state => state.authreducer.token)
+  console.log(token)
+
+  if(token.length === 0){
+    console.log("olmayib")
+  }else{
+    var decoded = jwt_decode(token);
+    var username = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
+   console.log(username)
+  }
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -36,9 +47,20 @@ const Header = () => {
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link disabled" href="#!">
-                Disabled
-              </a>
+              {username?
+              (<>
+              <a className="nav-link" href="#!">
+              {username}
+            </a> 
+            <button>
+              logout
+            </button> 
+              </>):
+            (<button>
+            login
+          </button>)
+            }
+              
             </li>
           </ul>
         </div>

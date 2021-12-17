@@ -72,55 +72,55 @@ const Register = () => {
     <>
       <div className="col-lg-8">
         <form onSubmit={RegisterForm}>
-          <div class="form-group">
-            <label for="exampleInputEmail1">full Name</label>
+          <div className="form-group">
+            <label htmlFor="exampleInputEmail1">full Name</label>
             <input
               type="text"
-              class="form-control"
+              className="form-control"
               placeholder="Enter full name"
               ref={FullNameRef}
             />
 
             <small>{error ? "bu sehvdir" : ""}</small>
           </div>
-          <div class="form-group">
-            <label for="exampleInputEmail1">user Name</label>
+          <div className="form-group">
+            <label htmlFor="exampleInputEmail1">user Name</label>
             <input
               type="text"
-              class="form-control"
+              className="form-control"
               placeholder="Enter name"
               ref={UserNameRef}
             />
           </div>
-          <div class="form-group">
-            <label for="exampleInputEmail1">email</label>
+          <div className="form-group">
+            <label htmlFor="exampleInputEmail1">email</label>
             <input
               type="email"
-              class="form-control"
+              className="form-control"
               placeholder="Enter email"
               ref={EmailRef}
             />
           </div>
-          <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
+          <div className="form-group">
+            <label htmlFor="exampleInputPassword1">Password</label>
             <input
               type="password"
-              class="form-control"
+              className="form-control"
               placeholder="Password"
               ref={PasswordRef}
             />
           </div>
-          <div class="form-check">
+          <div className="form-check">
             <input
               type="checkbox"
-              class="form-check-input"
+              className="form-check-input"
               id="exampleCheck1"
             />
-            <label class="form-check-label" for="exampleCheck1">
+            <label className="form-check-label" htmlFor="exampleCheck1">
               Check me out
             </label>
           </div>
-          <button type="submit" class="btn btn-primary">
+          <button type="submit" className="btn btn-primary">
             Submit
           </button>
         </form>

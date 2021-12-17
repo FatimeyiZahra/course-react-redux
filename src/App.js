@@ -10,17 +10,29 @@ import Login from "./page/login/Login";
 import SelectOption from "./app/component/SelectOption";
 import Register from "./page/register/Register";
 import Error from "./page/404/Error";
+import { useSelector } from "react-redux";
 const App = () => {
+   const isLoggedIn = useSelector(state => state.authreducer.isLoggedIn)
   return (
     <BrowserRouter>
       <Layout>
         <Switch>
-          <Route exact path="/">
+         
+          {isLoggedIn?
+          ( <Route exact path="/">
             <Register />
-          </Route>
-          <Route exact path="/login">
-            <Login />
-          </Route>
+          </Route>):( <Route exact path="/">
+          <Login />
+        </Route>)}
+        {!isLoggedIn?
+          ( <Route exact path="/login">
+          <Login />
+        </Route>):(<Route exact path="/login">
+          <Error />
+        </Route>)}
+        {/* <Route exact path="/login">
+          <Login />
+        </Route> */}
           <Route exact path="/select">
             <SelectOption />
           </Route>
@@ -40,6 +52,9 @@ const App = () => {
             <CategoryList/>
           </Route>
           <Route path="/error">
+            <Error/>
+          </Route>
+          <Route path="*">
             <Error/>
           </Route>
         </Switch>

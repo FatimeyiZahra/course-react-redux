@@ -5,7 +5,8 @@ export const authAction = (loginData, push)=>dispatch=> {
       .post("https://localhost:44305/api/manage/accounts/login", loginData)
       .then((res)=>{
         dispatch({type:actionType.Login_Succes,payload:res.data})
-        push(`/courseList`);
+        push(`/courseList`)
+        window.location.reload();
       })
     //   .catch(err => dispatch(getErrors(err.response.data)));
   }
