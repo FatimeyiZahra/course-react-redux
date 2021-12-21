@@ -38,8 +38,12 @@ const authreducer = (state = newAuth, action) => {
         isLoggedIn: true,
         token: action.payload,
       };
+      axios.defaults.headers.common["Authorization"] = `Bearer ${action.payload}`;
       localStorage.setItem("auth", JSON.stringify(NewAuthState));
       return NewAuthState;
+      case actionTypes.Logout_Succes:
+        localStorage.removeItem("auth");
+        return authState;
     default:
       return state;
   }

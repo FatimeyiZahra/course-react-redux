@@ -1,6 +1,8 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import jwt_decode from "jwt-decode";
+import { LogoutAction } from "../../../redux/actions/AuthAction";
+import { useHistory } from "react-router-dom";
 const Header = () => {
   const token = useSelector(state => state.authreducer.token)
   console.log(token)
@@ -11,6 +13,11 @@ const Header = () => {
     var decoded = jwt_decode(token);
     var username = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
    console.log(username)
+  } 
+  const dispatch = useDispatch()
+  const history = useHistory();
+  const LogOut = () => {
+   dispatch(LogoutAction(history.push))
   }
   return (
     <>
@@ -52,7 +59,7 @@ const Header = () => {
               <a className="nav-link" href="#!">
               {username}
             </a> 
-            <button>
+            <button onClick={LogOut}>
               logout
             </button> 
               </>):

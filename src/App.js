@@ -12,55 +12,56 @@ import Register from "./page/register/Register";
 import Error from "./page/404/Error";
 import { useSelector } from "react-redux";
 const App = () => {
-   const isLoggedIn = useSelector(state => state.authreducer.isLoggedIn)
+  const isLoggedIn = useSelector((state) => state.authreducer.isLoggedIn);
+  console.log(isLoggedIn);
   return (
     <BrowserRouter>
       <Layout>
         <Switch>
-         
-          {isLoggedIn?
-          ( <Route exact path="/">
+          {!isLoggedIn ? (
+            <>
+              <Route exact path="/">
+                <Login />
+              </Route>
+              <Route path="/register">
             <Register />
-          </Route>):( <Route exact path="/">
-          <Login />
-        </Route>)}
-        {!isLoggedIn?
-          ( <Route exact path="/login">
-          <Login />
-        </Route>):(<Route exact path="/login">
-          <Error />
-        </Route>)}
-        {/* <Route exact path="/login">
-          <Login />
-        </Route> */}
+          </Route>
+            </>
+          ) : (
+            <>
+              <Route excart path="/courseList">
+                <CourseList />
+              </Route>
+              <Route path="/edit/course/:id">
+                <Edit />
+              </Route>
+              <Route path="/details/course/:id">
+                <Details />
+              </Route>
+              <Route path="/create/course">
+                <Create />
+              </Route>
+              <Route path="/categoryList">
+                <CategoryList />
+              </Route>
+              <Route exact path="/login">
+                <Error />
+              </Route>
+            </>
+          )}
           <Route exact path="/select">
             <SelectOption />
           </Route>
-          <Route excart path="/courseList">
-            <CourseList/>
-          </Route>
-          <Route path="/edit/course/:id">
-            <Edit />
-          </Route>
-          <Route path="/details/course/:id">
-            <Details />
-          </Route>
-          <Route path="/create/course">
-            <Create />
-          </Route>
-          <Route path="/categoryList">
-            <CategoryList/>
-          </Route>
           <Route path="/error">
-            <Error/>
+            <Error />
           </Route>
           <Route path="*">
-            <Error/>
+            <Error />
           </Route>
         </Switch>
       </Layout>
     </BrowserRouter>
   );
-}
+};
 
 export default App;
