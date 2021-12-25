@@ -5,14 +5,14 @@ import { LogoutAction } from "../../../redux/actions/AuthAction";
 import { useHistory } from "react-router-dom";
 const Header = () => {
   const token = useSelector(state => state.authreducer.token)
-  console.log(token)
+  // console.log(token)
 
   if(token.length === 0){
     console.log("olmayib")
   }else{
     var decoded = jwt_decode(token);
     var username = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
-   console.log(username)
+  //  console.log(username)
   } 
   const dispatch = useDispatch()
   const history = useHistory();

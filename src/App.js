@@ -13,7 +13,7 @@ import Error from "./page/404/Error";
 import { useSelector } from "react-redux";
 const App = () => {
   const isLoggedIn = useSelector((state) => state.authreducer.isLoggedIn);
-  console.log(isLoggedIn);
+  // console.log(isLoggedIn);
   return (
     <BrowserRouter>
       <Layout>

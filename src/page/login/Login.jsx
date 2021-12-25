@@ -12,11 +12,12 @@ const Login = () => {
   //admin123
   const UserNameRef = useRef();
   const PasswordRef = useRef();
+  const [error, setError] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
   const [token, setJwt] = useState();
-  // const auth = useSelector(state => state.authreducer.token)
-  // console.log(auth)
+  const statusCode = useSelector(state => state.AuthErrorReducer.statusCode)
+  console.log(statusCode)
   const LoginForm = (e) => {
     e.preventDefault();
     const loginData = {
@@ -24,39 +25,28 @@ const Login = () => {
       password: PasswordRef.current.value,
     };
     dispatch(authAction(loginData,history.push))
-    // axios
-    //   .post("https://localhost:44305/api/manage/accounts/login", loginData)
-    //   .then((res) => setJwt(res.data))
-    //   .catch((error) => {
-    //     switch (error.response.status) {
-    //       case 400:
-    //         console.log("cant");
-    //         break;
-    //       case 201:
-    //         console.log("succes");
-    //         break;
-    //       case 404:
-    //         // history.push(`/courseList`);
-    //         console.log("not found");
-    //         break;
-    //       case 401:
-    //         console.log("name or passwor dis incorrect");
-    //         break;
-    //       default:
-    //         return console.log("asda");
-    //     }
-    //     // if (error.response) {
-    //     //   console.log(error.response.data.errors);
-    //     //   console.log(error.response.status);
+  
+        switch (statusCode) {
+          case 400:
+            console.log("cant");
+            break;
+          case 201:
+            console.log("succes");
+            break;
+          case 404:
+            // history.push(`/courseList`);
+            // console.log("not found");
+            setError(true);
+            break;
+          case 401:
+            console.log("name or passwor dis incorrect");
+            break;
+          default:
+            return setError(true);
+        }
 
-    //     // }
-    //     // if(error.response.status===404){
-    //     //   alertify.error("username or password is incorrect")
-    //     //   console.log(error.response.data)
-    //     // }
-    //   });
   };
-  console.log(token);
+  // console.log(token);
   if (token) {
     var decoded = jwt_decode(token);
     // console.log(
@@ -85,8 +75,10 @@ const Login = () => {
   return (
     <>
       <div className="col-lg-8">
+         <h2 className="text-danger">{error ? "username or password is incorrect" : ""}</h2>
         <form onSubmit={LoginForm}>
           <div className="form-group">
+         
             <label htmlFor="exampleInputEmail1">User Name</label>
             <input
               type="text"
