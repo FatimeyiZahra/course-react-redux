@@ -9,8 +9,9 @@ import { setCourseDetails } from "../../redux/actions/CourseAction";
 import { useParams } from "react-router";
 import axios from "axios";
 import DatePicker from "react-datepicker";
-import moment from "moment";
+import moment, { updateLocale } from "moment";
 import "react-datepicker/dist/react-datepicker.css";
+import Moment from "react-moment";
 const animatedComponents = makeAnimated();
 
 const Edit = () => {
@@ -20,22 +21,26 @@ const Edit = () => {
   const DateRef = useRef();
   const [selectedOptionss, setSelectedOptions] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState();
-  // const [DefaultValue, setDefaultValue] = useState([]);
 
   const allCategory = useSelector((state) => state.CategoryReducer.allCategory);
   const allTags = useSelector((state) => state.TagReducer.allTag);
   const courseDetails = useSelector(
     (state) => state.CourseReducer.courseDetails
   );
+  const starting = new Date(
+    moment(courseDetails.startDate).format('l')    
+  );
+  const star = courseDetails.startDate
+  console.log(starting);
+  console.log(courseDetails.startDate)
+  const [startDate, setStartDate] = useState( );
 
   const [courseUpdate, setCourseUpdate] = useState({});
-  console.log(courseUpdate);
+  // console.log(courseUpdate);
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  // if (courseDetails.courseTags.length>1) {
-  //  console.log(courseDetails.courseTags.length)
-  // }
+
   useEffect(() => {
     dispatch(setAllTags());
     dispatch(setAllCategory());
@@ -49,7 +54,11 @@ const Edit = () => {
     //   });
     //   setDefaultValue(defaultOptions);
     // }
-  }, [id]);
+    setStartDate( new Date(
+      moment(courseDetails.startDate).format('l')    
+    ))
+  }, [id]); 
+   console.log(startDate);
   // console.log(DefaultValue);
   const UpdateForm = (e) => {
     e.preventDefault();
@@ -61,6 +70,7 @@ const Edit = () => {
       CategoryId: parseInt(selectedCategory),
       StartDate: "2022-01-01T00:00:00",
     };
+    console.log(UpdateData);
     dispatch(createCourse(UpdateData));
     // console.log(CreateData);
   };
@@ -79,11 +89,8 @@ const Edit = () => {
   };
   const onInputChange = () => {};
   // console.log(selectedCategory);
+  // const starting = new Date(courseDetails.startDate)
 
-// const starting = new Date(courseDetails.startDate)
-const starting = new Date(moment(courseDetails.startDate).format('YYYY/MM/DD'));
-const star = new Date(2021/11/19)
-console.log(starting)
   return (
     <div className="col-lg-8">
       <form onSubmit={UpdateForm}>
@@ -103,7 +110,7 @@ console.log(starting)
             type="input"
             className="form-control"
             onChange={onInputChange}
-            value={courseDetails.desc || ""}
+            defaultValue={courseDetails.desc || ""}
             ref={DescRef}
           />
         </div>
@@ -114,11 +121,25 @@ console.log(starting)
         <div className="form-group">
           <label htmlFor="exampleInputPassword1">date</label>
           <DatePicker
-      dateFormat="yyyy/MM/dd"
-      defaultValue={star}
-      
-    />
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+          />
         </div>
+        <div>
+          <Moment format="YYYY/MM/DD">{courseDetails.startDate}</Moment>
+        </div>
+        <div>
+          <input
+            type="date"
+            id="start"
+            name="trip-start"
+            value={courseDetails.startDate}
+            // value="2018-07-22"
+            // min="2018-01-01"
+            // max="2018-12-31"
+          ></input>
+        </div>
+
         <Select
           closeMenuOnSelect={false}
           components={animatedComponents}
@@ -126,17 +147,22 @@ console.log(starting)
           //   value: courseDetails.courseTags[0].tagId ,
           //   label: courseDetails.courseTags[0].name
           // }}
-          defaultValue= {courseDetails.courseTags &&
-            courseDetails.courseTags.length > 1 ? (
-              courseDetails.courseTags.map((item) => (
-               { value: item.tagId,
-                 label: item.name,}
-              ))
+          defaultValue={
+            courseDetails.courseTags && courseDetails.courseTags.length > 1 ? (
+              courseDetails.courseTags.map((item) => ({
+                value: item.tagId,
+                label: item.name,
+              }))
             ) : (
-                <span>{courseDetails.courseTags && courseDetails.courseTags[0].name || ""}</span>
-            )}
+              <span>
+                {(courseDetails.courseTags &&
+                  courseDetails.courseTags[0].name) ||
+                  ""}
+              </span>
+            )
+          }
           // defaultValue={
-            
+
           //     courseDetails.courseTags &&
           //     courseDetails.courseTags.length > 1 ? (
           //       courseDetails.courseTags.map((item) => ({
@@ -146,7 +172,7 @@ console.log(starting)
           //       :(
 
           //       )
-          //     ) 
+          //     )
           // }
           isMulti
           options={options}
