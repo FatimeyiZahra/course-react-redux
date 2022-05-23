@@ -9,11 +9,19 @@ import CategoryList from "./manage/category/CategoryList";
 import Login from "./page/login/Login";
 import SelectOption from "./app/component/SelectOption";
 import Register from "./page/register/Register";
+import { createBrowserHistory } from 'history';
 import Error from "./page/404/Error";
 import { useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 const App = () => {
+  const history = createBrowserHistory();
   const isLoggedIn = useSelector((state) => state.authreducer.isLoggedIn);
   // console.log(isLoggedIn);
+  if(isLoggedIn){
+   
+    history.push({pathname: "/courseList"})
+  }
   return (
     <BrowserRouter>
       <Layout>

@@ -11,8 +11,8 @@ const Header = () => {
     console.log("olmayib")
   }else{
     var decoded = jwt_decode(token);
-    var username = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
-  //  console.log(username)
+    var username = decoded["FullName"];
+  //  console.log(decoded)
   } 
   const dispatch = useDispatch()
   const history = useHistory();
