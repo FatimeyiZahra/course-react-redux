@@ -41,7 +41,7 @@ const authreducer = (state = newAuth, action) => {
       axios.defaults.headers.common["Authorization"] = `Bearer ${action.payload}`;
       localStorage.setItem("auth", JSON.stringify(NewAuthState));
       return NewAuthState;
-      case actionTypes.Logout_Succes:
+      case actionTypes.Login_Fail:
         localStorage.removeItem("auth");
         return authState;
     default:

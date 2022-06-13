@@ -21,6 +21,7 @@ const App = () => {
   if(isLoggedIn){
    
     history.push({pathname: "/courseList"})
+    // browserHistory.push('/some/path')
   }
   return (
     <BrowserRouter>
